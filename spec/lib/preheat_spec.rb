@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'spec'
 require 'active_support'
-require 'lib/preheatt'
+require 'lib/preheat'
 
 describe ActiveSupport::Cache do
 
