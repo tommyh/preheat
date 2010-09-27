@@ -1,0 +1,5 @@
+Manifest
+README.rdoc
+Rakefile
+lib/preheat.rb
+spec/lib/preheat_spec.rb
