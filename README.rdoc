@@ -28,7 +28,7 @@ Here's how you could update all of your product pages:
     end
   end
 
-Note: If you have not seen "app.get" used before, the app object is not related to my preheat gem.  It ships with rails: http://www.clarkware.com/cgi/blosxom/2006/04/04.  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like devise/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
+Note: If you have not seen "app.get" used before, the app object is not related to my preheat gem.  It ships with rails {more detail here}[http://www.clarkware.com/cgi/blosxom/2006/04/04].  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like mechanize/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
 
 
 An example without app.get:
@@ -39,7 +39,7 @@ An example without app.get:
 
 == Thanks
 
-Thank you to Brian Guthrie for getting me learned up on gem dependencies and the like.
+Thank you to Brian Guthrie for getting me all learned up on gem dependencies and the like.
 
 
 
