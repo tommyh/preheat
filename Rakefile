@@ -1,14 +1,19 @@
 require 'rubygems'
 require 'rake'
-require 'echoe'
 
-Echoe.new('preheat', '0.1.0') do |p|
-  p.description    = "Warm your Rails.cache easier."
-  p.url            = "http://github.com/tommyh/preheat"
-  p.author         = "Tom Hallett"
-  p.email          = "tomhallett@gmail.com"
-  p.ignore_pattern = ["tmp/*", "script/*"]
-  p.development_dependencies = []
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "preheat"
+    gemspec.summary = "Keep your Rails.cache warm"
+    gemspec.description = "Keep your Rails.cache warm"
+    gemspec.email = "tomhallett@gmail.com"
+    gemspec.homepage = "http://github.com/tommyh/preheat"
+    gemspec.authors = ["Tom Hallett"]
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
-Dir["#{File.dirname(__FILE__)}/tasks/*.rake"].sort.each 
+Dir["#{File.dirname(__FILE__)}/tasks/*.rake"].sort.each { |ext| load ext }
