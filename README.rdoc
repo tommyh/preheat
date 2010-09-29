@@ -1,8 +1,8 @@
 = Preheat
 
-Keep your Rails.cache up to date with:
-* NO code bloat in your Rails.cache.fetch invocations
-* NO tedious dependency setup in a cron task to mimic what your controller does, just so you can call your model/library methods which have the Rails.cache.fetch invocations
+Keep your Rails.cache up to date without:
+* code bloat in your Rails.cache.fetch invocations
+* tedious dependency setup in a cron task to mimic what your controller does, just so you can call your model/library methods which have the Rails.cache.fetch invocations
 
 Anything executed in a Preheat.it block will change all fetch calls into a fetch calls with :force => true.  (:force => true will force a cache-miss and a subsequent cache-write)
 
