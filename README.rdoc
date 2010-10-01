@@ -15,29 +15,40 @@ Anything executed in a Preheat.it block will change all fetch calls into a fetch
 
 == Example
 
-This will "preheat" all your Rails.cache.fetch calls on your homepage.  Put that in a rake task and call it from a cronjob - that's it!
+This will "preheat" all your Rails.cache.fetch calls on your homepage.  It is as simple as that!
 
   Preheat.it do
     app.get("/")
   end
 
-Here's how you could update all of your product pages:
+== A more detailed example
 
-  Preheat.it do
-    @products = Product.all
-    @products.each do |product|
-      app.get(app.products_path(product))
+Let's say we have a list of product pages where we want the cached to be updated every hour.
+
+  #app/models/product.rb
+  def slow_method
+    Rails.cache.fetch("product-slow-method-#{self.id}") do
+      sleep 15
+      Time.now
     end
   end
 
-Note: If you have not seen "app.get" used before, the app object is not related to my preheat gem.  It ships with rails {more detail here}[http://www.clarkware.com/cgi/blosxom/2006/04/04].  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like mechanize/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
-
-
-An example without app.get:
-
-  Preheat.it do
-    Product.first.really_slow_class_method_which_uses_caching
+  #lib/tasks/preheat.rake
+  namespace :preheat do
+    desc "Preheat product caches"
+    task (:products => :environment) do
+      Preheat.it do
+        Product.all.each do |product|
+          app.get(app.products_path(product)) #or you could just call product.slow_method directly, whatever makes more sense
+        end
+      end
+    end
   end
+
+  #crontab -e
+  0 * * * * /path/to/rake preheat:products RAILS_ENV=production 2>&1 >> #{Rails.root}/log/preheat.log &
+
+Note: If you have not seen "app.get" used before, the app object is not related to my preheat gem.  It ships with rails {more detail here}[http://www.clarkware.com/cgi/blosxom/2006/04/04].  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like mechanize/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
 
 == Thanks
 
