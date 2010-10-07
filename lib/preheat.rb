@@ -11,14 +11,12 @@ class ActiveSupport::Cache::Store
     end
   end
 
-  #the singleton class_eval workaround for the aliasing is due to this issue:
-  # http://newsgroups.derkeiler.com/Archive/Comp/comp.lang.ruby/2006-05/msg00575.html
   def enable_preheat
-    (class << self; self; end).class_eval { alias_method_chain :fetch, :force }
+    self.class_eval { alias_method_chain :fetch, :force }
   end
 
   def disable_preheat
-    (class << self; self; end).class_eval { alias_method :fetch, :fetch_without_force }
+    self.class_eval { alias_method :fetch, :fetch_without_force }
   end
 end
 
