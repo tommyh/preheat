@@ -8,11 +8,6 @@ Keep your Rails.cache up to date without:
 
 Anything executed in a Preheat.it block will change all fetch calls into a fetch calls with :force => true.  (:force => true will force a cache-miss and a subsequent cache-write)
 
-== Installation
-
-1. gem install preheat
-2. Add the gem to environment.rb or your Gemfile
-
 == Example
 
 This will "preheat" all your Rails.cache.fetch calls on your homepage.  It is as simple as that!
@@ -20,6 +15,8 @@ This will "preheat" all your Rails.cache.fetch calls on your homepage.  It is as
   Preheat.it do
     app.get("/")
   end
+
+Note: If you have not seen "app.get" used before, the "app" object is not related to my preheat gem.  It ships with rails: {more detail here}[http://www.clarkware.com/cgi/blosxom/2006/04/04].  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like mechanize/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
 
 == A more detailed example
 
@@ -48,11 +45,15 @@ Let's say we have a list of product pages where we want the cached to be updated
   #crontab -e
   0 * * * * /path/to/rake preheat:products RAILS_ENV=production 2>&1 >> #{Rails.root}/log/preheat.log &
 
-Note: If you have not seen "app.get" used before, the app object is not related to my preheat gem.  It ships with rails {more detail here}[http://www.clarkware.com/cgi/blosxom/2006/04/04].  I use app.get because ActiveSupport's fetch method is being modified only in the ruby process which is using Preheat, so something like mechanize/wget/curl would call the page through your frontend webserver and would not be effected by Preheat.it, while app.get will directly call your controller in that same ruby process.
+== Installation
+
+1. gem install preheat
+2. Add the gem to environment.rb or your Gemfile
 
 == Thanks
 
-Thank you to Brian Guthrie for getting me all learned up on gem dependencies and the like.
+John Hume for helping me cleanup part of my code.
+Brian Guthrie for getting me all learned up on gem dependencies and the like.
 
 
 
