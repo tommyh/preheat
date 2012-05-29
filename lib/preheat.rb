@@ -1,14 +1,8 @@
 class ActiveSupport::Cache::Store
 
-  def fetch_with_force(name, options = {})
-    options.merge!({:force => true})
-    if block_given?
-      fetch_without_force(name, options) do
-        yield
-      end
-    else
-      fetch_without_force(name, options)
-    end
+  def fetch_with_force name, options = {}, &block
+    options.merge! :force => true
+    fetch_without_force name, options, &block
   end
 
   def enable_preheat
